@@ -1,0 +1,11 @@
+name: stock-env
+channels:
+  - conda-forge
+  - anaconda
+  - defaults
+dependencies:
+  - pip
+  - python=3.12
+  - pip:
+      - -r requirements.txt
+      - -e .
