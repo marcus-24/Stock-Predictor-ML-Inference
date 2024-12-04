@@ -1,0 +1,1 @@
+from .data_endpoint import data_blueprint

@@ -1,41 +1,13 @@
-from keras import layers, models, optimizers, losses  # TODO: figure out pylance errors
-import tensorflow as tf 
-import pandas as pd
-import mlflow
 from huggingface_hub import Repository, login, HfApi, ModelCard, ModelCardData
 from dotenv import load_dotenv
 import os
 
-BATCH_SIZE = 32
-N_PAST = 24
-N_FEATURES = 7
+from models import build_bidirec_lstm_model
 
 load_dotenv()
 
-
-def build_model(n_past: int = N_PAST,
-                n_features: int = N_FEATURES,
-                batch_size: int = BATCH_SIZE) -> models.Sequential:
-	model = models.Sequential([
-            layers.InputLayer(input_shape=(n_past, n_features),
-                                batch_size=batch_size),
-            layers.Bidirectional(layers.LSTM(20, return_sequences=True)),
-            layers.Bidirectional(layers.LSTM(20, return_sequences=True)),
-            layers.Dense(n_features)
-    ])
-
-	lr = 0.1
-	optimizer = optimizers.SGD(learning_rate=lr, momentum=0.9) # YOUR CODE HERE
-	model.compile(loss=losses.Huber(),
-				  optimizer=optimizer,
-				  metrics=["mae"])
-	model.summary()
-
-	return model
-
-
 if __name__ == '__main__':
-	model = build_model()
+	model = build_bidirec_lstm_model()
 	local_hugface_dir = 'model_repo'
 	model_fname = os.path.join(local_hugface_dir, 'test_model.keras')
 	
@@ -71,7 +43,3 @@ if __name__ == '__main__':
     repo="https://github.com/marcus-24/Stock-Predictor-Backend")
 	
 	card.push_to_hub(repo_id)
-
-
-	# with mlflow.start_run():
-	#         mlflow.tensorflow.log_model(model, 'tf_test_model')
