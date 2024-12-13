@@ -20,11 +20,11 @@ def read(fname: str) -> str:
 
 
 setup(
-      name="Stock-Predictor-Backend",
-      version="0.0.1",
-      author="Marcus Allen",
-      author_email="marcusCallen24@gmail.com",
-      url="https://github.com/marcus-24/Stock-Predictor-Backend",
-      long_description=read('README.md'),
-      py_modules=[]
+    name="Stock-Predictor-Backend",
+    version="0.0.1",
+    author="Marcus Allen",
+    author_email="marcusCallen24@gmail.com",
+    url="https://github.com/marcus-24/Stock-Predictor-Backend",
+    long_description=read("README.md"),
+    py_modules=[],
 )
