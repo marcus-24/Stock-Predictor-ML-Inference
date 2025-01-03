@@ -6,6 +6,7 @@ import os
 
 load_dotenv()
 FRONTEND_URL = os.getenv("FRONTEND_URL")
+ENV = os.getenv("ENV")
 
 app = Flask(__name__)
 app.register_blueprint(data_blueprint)
@@ -22,4 +23,5 @@ def hello_world() -> str:
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    debug = True if ENV == "development" else False
+    app.run(debug=debug)

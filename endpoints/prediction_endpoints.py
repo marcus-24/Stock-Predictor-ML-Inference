@@ -26,7 +26,7 @@ def get_prediction(ticker: str, days: int) -> Response:
     # TODO: apply actual model later
     today = datetime.date.today()
     start_date = today - datetime.timedelta(days=days)
-    df = (
+    json_data = (
         yf.Ticker(ticker)
         .history(start=str(start_date), end=str(today))
         .pipe(add_noise)
@@ -35,6 +35,6 @@ def get_prediction(ticker: str, days: int) -> Response:
         .to_json(orient="records", date_format="iso")
     )  # make each row a json object
 
-    dict_json = json.loads(df)
+    dict_json = json.loads(json_data)
 
     return jsonify(dict_json)
