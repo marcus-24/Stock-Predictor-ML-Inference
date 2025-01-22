@@ -1,4 +1,4 @@
-name: stock-env
+name: stock_ml_inference
 channels:
   - conda-forge
   - anaconda

@@ -1,12 +1,11 @@
+evidently==0.5.1
 Flask==3.1.0
+Flask-Caching==2.3.0
 flask-cors==5.0.0
-huggingface_hub
 Gunicorn
-matplotlib
-mlflow==2.19.0
 pandas
+pydantic==4.12.2
+pydantic-settings==2.7.1
 python-dotenv
-scikit-learn==1.5.2
 tensorflow==2.18.0
-transformers==4.46.2
 yfinance==0.2.50
