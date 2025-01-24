@@ -1,44 +1,31 @@
-from flask import Blueprint, jsonify, Response, current_app
-import pandas as pd
+# standard imports
+from flask import Blueprint, jsonify, Response
 import os
 
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"  # turn off one DNN custom operations
 import keras
 from keras import models
-import yfinance as yf
-import evidently
 import numpy as np
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
+# local imports
 from .cache import cache
+from preprocessing.defaults import process_data
+from configs.loadsettings import HuggingFaceSettings
 
 
 pred_blueprint = Blueprint("pred", __name__)
 
-
-MODEL: models.Sequential = keras.saving.load_model(
-    "hf://DrMarcus24/test-stock-predictor"
-)
+MODEL_URL = HuggingFaceSettings().MODEL_URL
 
 # TODO: Make these vars global between here and the training pipeline
 N_PAST = 10
 TICKER = "AAPL"
 DATA_COLS = ["Open", "High", "Low", "Close"]
-MODEL_URL = "hf://DrMarcus24/test-stock-predictor"
+
 END_DATE = date.today()
 START_DATE = END_DATE - relativedelta(days=N_PAST)
-
-
-def process_data(
-    ticker: str, start_date: str, end_date: str, data_cols: list[str] = DATA_COLS
-) -> pd.DataFrame:
-    return (
-        yf.Ticker(ticker)
-        .history(start=start_date, end=end_date)
-        .loc[:, data_cols]
-        # .reset_index()  # pop out datetime index
-    )  # make each row a json object
 
 
 def load_model(url: str = MODEL_URL) -> models.Sequential:

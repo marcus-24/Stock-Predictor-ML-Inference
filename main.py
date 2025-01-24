@@ -4,7 +4,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 
 # local imports
-from blueprints import data_blueprint, pred_blueprint
+from blueprints import data_blueprint, pred_blueprint, monitor_blueprint
 from blueprints.cache import cache
 from configs.loadsettings import AppSettings
 
@@ -15,6 +15,7 @@ app = Flask(__name__)
 
 app.register_blueprint(data_blueprint)
 app.register_blueprint(pred_blueprint)
+app.register_blueprint(monitor_blueprint)
 
 CORS(
     app, origins=[app_settings.FRONTEND_URL, app_settings.FRONTEND_URL]
