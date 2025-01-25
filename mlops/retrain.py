@@ -1,6 +1,9 @@
+# standard imports
 import requests
 from requests import Response
 import json
+
+# local imports
 from configs.loadsettings import GitHubSettings
 
 GIT_SETTINGS = GitHubSettings()

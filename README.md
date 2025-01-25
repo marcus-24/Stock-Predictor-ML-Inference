@@ -1,6 +1,6 @@
 # Stock-Predictor-ML-Inference
 
-This repository is the backend that serves the TensorFlow neural network model.
+The objective of this code is to create a model inference server via Flask to send stock predictions from the trained ML model to the frontend and monitor model and data drift using Evidently AI.
 
 ## Setup
 
@@ -17,3 +17,12 @@ Or through pip using the two commands below:
 ## Deployment
 
 This backend is hosted on Render.com for free.
+
+## Connected Services
+
+This repository interacts with the following services below:
+
+<ol>
+<li><a href="https://github.com/marcus-24/Stock-Predictor-ML-Training">Stock-Predictor-ML-Training</a></li>
+<li><a href="https://github.com/marcus-24/Stock-Predictor-Frontend">Stock-Predictor-Frontend</a></li>
+</ol>

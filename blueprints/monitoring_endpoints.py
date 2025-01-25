@@ -14,7 +14,6 @@ from mlops.preprocessing import process_data
 from mlops.retrain import trigger_ml_model_retrain
 
 # TODO: time these calls using flask scheduler
-# TODO: Use github api to retrigger training pipeline from python
 EV_SETTINGS = EvidentlySettings()
 
 TICKER = "AAPL"
