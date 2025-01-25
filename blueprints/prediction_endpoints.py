@@ -11,7 +11,7 @@ from dateutil.relativedelta import relativedelta
 
 # local imports
 from .cache import cache
-from preprocessing.defaults import process_data
+from mlops.preprocessing import process_data
 from configs.loadsettings import HuggingFaceSettings
 
 

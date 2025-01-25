@@ -18,3 +18,7 @@ class EvidentlySettings(BaseSettings):
 
     EVIDENTLY_TOKEN: SecretStr
     EVIDENTLY_PROJECT_ID: SecretStr
+
+
+class GitHubSettings(BaseSettings):
+    GITHUB_TOKEN: SecretStr
