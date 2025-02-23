@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 # local imports
 from blueprints import data_blueprint, pred_blueprint, monitor_blueprint
-from blueprints.cache import cache
+from mlops.get_models import cache
 from configs.loadsettings import AppSettings
 
 load_dotenv()  # load environment variables

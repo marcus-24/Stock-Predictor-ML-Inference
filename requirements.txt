@@ -9,4 +9,4 @@ pydantic==4.12.2
 pydantic-settings==2.7.1
 python-dotenv
 tensorflow==2.18.0
-yfinance==0.2.50
+yfinance==0.2.54

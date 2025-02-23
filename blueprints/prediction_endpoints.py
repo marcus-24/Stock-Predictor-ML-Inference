@@ -1,55 +1,35 @@
 # standard imports
 from flask import Blueprint, jsonify, Response
-import os
-
-os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"  # turn off one DNN custom operations
-import keras
-from keras import models
 import numpy as np
-from datetime import date
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 # local imports
-from .cache import cache
 from mlops.preprocessing import process_data
-from configs.loadsettings import HuggingFaceSettings
-
+from mlops import load_model
 
 pred_blueprint = Blueprint("pred", __name__)
 
-MODEL_URL = HuggingFaceSettings().MODEL_URL
-
 # TODO: Make these vars global between here and the training pipeline
-N_PAST = 10
+N_PAST = 7
 TICKER = "AAPL"
 DATA_COLS = ["Open", "High", "Low", "Close"]
 
-END_DATE = date.today()
-START_DATE = END_DATE - relativedelta(days=N_PAST)
-
-
-def load_model(url: str = MODEL_URL) -> models.Sequential:
-    cached_model = cache.get("my_model")
-    if not cached_model:
-        # Data not in cache, fetch it from the model
-        model = keras.saving.load_model(url)
-        cache.set("my_model", model, timeout=600)  # Cache for 600 seconds
-    else:
-        model = cached_model
-
-    return model
+START_TIME = datetime.now() - relativedelta(hours=7)
+END_TIME = None
 
 
 @pred_blueprint.route(
-    "/predict", defaults={"start_date": START_DATE, "end_date": END_DATE}
+    "/predict", defaults={"start_time": START_TIME, "end_time": END_TIME}
 )
-@pred_blueprint.route("/predict/start_date/<start_date>/end_date/<end_date>")
-def predict(start_date: date, end_date: date) -> Response:
-    df = process_data(TICKER, start_date, end_date)
+@pred_blueprint.route("/predict/start_time/<start_time>/end_time/<end_time>")
+def predict(start_time: datetime, end_time: datetime) -> Response:
+    df = process_data(TICKER, start_time, end_time)
     X = np.expand_dims(
-        df.to_numpy(), axis=0
+        df.mean().to_numpy(), axis=(0, 1)
     )  # convert to numpy and add batch dim for model input shape
+    print(X)
     model = load_model()
-    pred: np.ndarray = model.predict(X)
+    pred: np.ndarray = model.predict(X, batch_size=X.shape[0])
 
     return jsonify(pred.tolist())
