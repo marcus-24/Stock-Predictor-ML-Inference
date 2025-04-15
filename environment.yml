@@ -5,7 +5,8 @@ channels:
   - defaults
 dependencies:
   - pip
-  - python=3.12
+  - python=3.11
+  - pylint
   - pip:
       - -r requirements.txt # use pip libraries for lightweight deployment (no conda install required)
       - -e . # allow to import local modules while editing them

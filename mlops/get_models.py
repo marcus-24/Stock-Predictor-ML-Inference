@@ -4,11 +4,14 @@ import os
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"  # turn off one DNN custom operations
 import keras
 from keras import models
+from dotenv import load_dotenv
 
 from configs.loadsettings import HuggingFaceSettings
 
 
 # created a separate file to avoid circular imports
+
+load_dotenv(override=True)  # load environment variables
 cache = Cache()
 
 MODEL_URL = HuggingFaceSettings().MODEL_URL

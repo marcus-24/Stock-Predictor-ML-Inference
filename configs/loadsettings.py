@@ -1,4 +1,4 @@
-from pydantic import HttpUrl, SecretStr
+from pydantic import SecretStr
 from pydantic_settings import BaseSettings
 
 
@@ -11,7 +11,6 @@ class AppSettings(BaseSettings):
 
 class HuggingFaceSettings(BaseSettings):
     MODEL_URL: str
-    DATA_REPO: str
 
 
 class EvidentlySettings(BaseSettings):
@@ -22,3 +21,7 @@ class EvidentlySettings(BaseSettings):
 
 class GitHubSettings(BaseSettings):
     GITHUB_TOKEN: SecretStr
+
+
+class HopsworksSettings(BaseSettings):
+    HOPSWORKS_KEY: SecretStr
