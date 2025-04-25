@@ -17,6 +17,11 @@ load_dotenv(override=True)  # load environment variables
 app = Flask(__name__)
 
 
+def set_global_variables(my_app: Flask) -> Flask:
+    # Use this to login to hopsworks to avoid multiple logins
+    pass
+
+
 def setup_cors_extension(my_app: Flask, frontend_url: str) -> Flask:
     """_summary_
 
@@ -80,15 +85,15 @@ def hello_world() -> str:
 
 if __name__ == "__main__":
     app_settings = AppSettings()
-    DEBUG = app_settings.ENV == "development"
+    DEBUG = app_settings.ENV_NAME == "dev"
 
     app = register_blueprints(app, blueprints=[data_blueprint, pred_blueprint])
     app = setup_cors_extension(app, frontend_url=app_settings.FRONTEND_URL)
 
     cache.init_app(app, config={"CACHE_TYPE": "simple"})
 
-    # scheduler = APScheduler()
+    scheduler = APScheduler()
 
-    # app = setup_scheduler(app, scheduler)
+    app = setup_scheduler(app, scheduler)
 
     app.run(debug=DEBUG)

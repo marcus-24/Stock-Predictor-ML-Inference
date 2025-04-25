@@ -6,7 +6,7 @@ class AppSettings(BaseSettings):
 
     # FRONTEND_URL: HttpUrl
     FRONTEND_URL: str
-    ENV: str
+    ENV_NAME: str
 
 
 class HuggingFaceSettings(BaseSettings):

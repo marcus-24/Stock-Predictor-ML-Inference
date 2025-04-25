@@ -14,10 +14,13 @@ from configs.loadsettings import HuggingFaceSettings
 load_dotenv(override=True)  # load environment variables
 cache = Cache()
 
+ENV_NAME = os.getenv("ENV_NAME")
 MODEL_URL = HuggingFaceSettings().MODEL_URL
 
+MODEL_URL_ENV = f"{MODEL_URL}-{ENV_NAME}"
 
-def load_model(url: str = MODEL_URL) -> models.Sequential:
+
+def load_model(url: str = MODEL_URL_ENV) -> models.Sequential:
     cached_model = cache.get("my_model")
     if not cached_model:
         # Data not in cache, fetch it from the model
