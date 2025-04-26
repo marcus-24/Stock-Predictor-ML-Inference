@@ -4,7 +4,7 @@ from evidently.ui.workspace import CloudWorkspace
 from evidently.metrics import MAE
 from evidently.presets import DataDriftPreset
 from keras import models
-import hopsworks
+from hopsworks.project import Project
 from hsfs.feature_store import FeatureStore
 import pandas as pd
 import numpy as np
@@ -12,11 +12,10 @@ from dotenv import load_dotenv
 
 from mlops.retrain import trigger_ml_model_retrain
 from mlops import load_model
-from configs.loadsettings import EvidentlySettings, HopsworksSettings, AppSettings
+from configs.loadsettings import EvidentlySettings, AppSettings
 
 load_dotenv(override=True)
 
-HW_SETTINGS = HopsworksSettings()
 EV_SETTINGS = EvidentlySettings()
 ENV_NAME = AppSettings().ENV_NAME
 
@@ -34,8 +33,6 @@ REG_NAMES = [
 ]
 
 # TODO: Make sure this range only contains validation and test data
-
-HW_PROJECT = hopsworks.login(api_key_value=HW_SETTINGS.HOPSWORKS_KEY.get_secret_value())
 
 
 PROJECT_ID = EV_SETTINGS.EVIDENTLY_PROJECT_ID.get_secret_value()
@@ -107,9 +104,9 @@ def _get_current_dataset(
     )
 
 
-def data_drift_detection() -> None:
+def data_drift_detection(hopsworks_project: Project) -> None:
     """Load historical data"""
-    feature_store: FeatureStore = HW_PROJECT.get_feature_store()
+    feature_store: FeatureStore = hopsworks_project.get_feature_store()
 
     historical_ds = _get_historical_dataset(feature_store)
     model = load_model()

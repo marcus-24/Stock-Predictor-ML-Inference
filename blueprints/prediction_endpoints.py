@@ -1,24 +1,16 @@
 # standard imports
-from flask import Blueprint, jsonify, Response
+from flask import Blueprint, jsonify, Response, current_app
 import numpy as np
 from dateutil.relativedelta import relativedelta
-import hopsworks
+from hopsworks.project import Project
 from hsfs.feature_store import FeatureStore
 from datetime import date
 import pandas as pd
-from dotenv import load_dotenv
 
 # local imports
 from mlops import load_model
-from configs.loadsettings import HopsworksSettings, AppSettings
 from myfeatures.dates import financial_date_correction
 
-load_dotenv(override=True)
-hopsworks_settings = HopsworksSettings()
-ENV_NAME = AppSettings().ENV_NAME
-PROJECT = hopsworks.login(
-    api_key_value=hopsworks_settings.HOPSWORKS_KEY.get_secret_value()
-)
 
 pred_blueprint = Blueprint("pred", __name__)
 
@@ -74,11 +66,15 @@ def format_predictions(predictions: np.ndarray, query_date: date) -> Response:
 @pred_blueprint.route("/predict")
 def predict() -> Response:
 
-    fs: FeatureStore = PROJECT.get_feature_store(name="stock_predictor_featurestore")
+    hopsworks_project: Project = current_app.config["HOPSWORKS_PROJECT"]
+    env_name = current_app.config["ENV_NAME"]
+    fs: FeatureStore = hopsworks_project.get_feature_store(
+        name="stock_predictor_featurestore"
+    )
 
     # TODO: Replace line below with hopsworks query
     df = (
-        fs.get_feature_group(name=f"stock_features_{ENV_NAME}")
+        fs.get_feature_group(name=f"stock_features_{env_name}")
         .read()
         .set_index("date")
         .sort_index()
