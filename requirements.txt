@@ -13,5 +13,5 @@ pydantic<=2.11.1
 pydantic-settings==2.7.1
 python-dotenv==1.1.0
 tensorflow==2.18.0
-yfinance==0.2.54
+yfinance==0.2.58
 git+https://github.com/marcus-24/Stock-Predictor-Feature-Store
